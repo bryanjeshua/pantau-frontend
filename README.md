@@ -1,36 +1,150 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PANTAU — Platform Audit Keuangan Daerah
 
-## Getting Started
+**PANTAU** adalah platform audit keuangan daerah berbasis AI yang membantu auditor pemerintah mendeteksi risiko, menganalisis dokumen anggaran, dan menghasilkan laporan resmi secara efisien.
 
-First, run the development server:
+Dibangun untuk **Microsoft Elevate Hackathon** — didukung oleh Microsoft Azure dan Google Gemini AI.
+
+---
+
+## Fitur Utama
+
+| Fitur | Deskripsi |
+|---|---|
+| **Dashboard** | Ringkasan statistik temuan risiko, distribusi per level dan jenis dokumen |
+| **Manajemen Dokumen** | Upload dokumen anggaran (APBD, SPJ, Pengadaan) dalam format CSV untuk dianalisis AI |
+| **Temuan Risiko** | Daftar temuan yang dideteksi AI, lengkap dengan konfirmasi dan detail analisis |
+| **Konsultasi AI** | Chat dengan AI untuk pertanyaan seputar regulasi keuangan daerah |
+| **Laporan** | Generate memo audit resmi (DOCX/PDF) dari temuan yang sudah dikonfirmasi |
+
+---
+
+## Tech Stack
+
+- **Frontend**: [Next.js 15](https://nextjs.org) (App Router) + TypeScript
+- **UI**: [Tailwind CSS](https://tailwindcss.com) + [shadcn/ui](https://ui.shadcn.com)
+- **Auth & Database**: [Supabase](https://supabase.com)
+- **Backend API**: FastAPI (Python) — repo terpisah
+- **AI**: Google Gemini 2.5 Flash Lite via backend
+- **Deploy**: [Vercel](https://vercel.com)
+
+---
+
+## Struktur Direktori
+
+```
+frontend/
+├── app/
+│   ├── (app)/                  # Route group — halaman yang butuh auth
+│   │   ├── dashboard/          # Halaman dashboard
+│   │   ├── documents/          # Manajemen dokumen
+│   │   ├── findings/           # Temuan risiko + detail
+│   │   ├── chat/               # Konsultasi AI
+│   │   ├── laporan/            # Generate laporan
+│   │   └── layout.tsx          # Layout dengan sidebar + auth guard
+│   ├── login/                  # Halaman login
+│   └── layout.tsx              # Root layout
+├── components/
+│   ├── ui/                     # Komponen shadcn/ui
+│   ├── Sidebar.tsx             # Navigasi sidebar
+│   └── RiskBadge.tsx           # Badge level risiko
+├── lib/
+│   ├── api.ts                  # API client (semua endpoint backend)
+│   ├── supabase.ts             # Supabase client
+│   └── types.ts                # TypeScript types
+└── public/
+```
+
+---
+
+## Memulai (Development)
+
+### Prasyarat
+
+- Node.js 18+
+- npm / yarn / pnpm
+- Backend PANTAU sudah berjalan (lihat repo backend)
+
+### Instalasi
+
+```bash
+# Clone repo
+git clone https://github.com/<your-username>/pantau-frontend.git
+cd pantau-frontend
+
+# Install dependencies
+npm install
+
+# Setup environment variables
+cp .env.example .env.local
+# Edit .env.local dengan nilai yang sesuai
+```
+
+### Environment Variables
+
+Buat file `.env.local` berdasarkan `.env.example`:
+
+```env
+# Supabase (public keys)
+NEXT_PUBLIC_SUPABASE_URL=https://xxxxxxxxxxxx.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJ...
+
+# URL backend API
+NEXT_PUBLIC_API_URL=http://localhost:8000
+```
+
+### Jalankan Dev Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Buka [http://localhost:3000](http://localhost:3000) di browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Deploy ke Vercel
 
-## Learn More
+### 1. Push ke GitHub
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+git add .
+git commit -m "Initial commit"
+git push origin main
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 2. Import ke Vercel
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Buka [vercel.com/new](https://vercel.com/new)
+2. Import repo GitHub ini
+3. Framework preset akan terdeteksi otomatis sebagai **Next.js**
+4. Tambahkan environment variables berikut:
 
-## Deploy on Vercel
+| Variable | Value |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | URL project Supabase |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Anon key Supabase |
+| `NEXT_PUBLIC_API_URL` | URL backend yang sudah live |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+5. Klik **Deploy**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Setiap push ke branch `main` akan otomatis trigger redeploy.
+
+---
+
+## Akun Demo
+
+Untuk mencoba aplikasi tanpa registrasi, gunakan tombol **"Masuk sebagai demo"** di halaman login.
+
+> Akun demo memiliki akses read ke data sample yang sudah tersedia.
+
+---
+
+## Screenshot
+
+> Dashboard, Temuan Risiko, dan Konsultasi AI tersedia setelah login.
+
+---
+
+## Lisensi
+
+Proyek ini dibuat untuk keperluan kompetisi Microsoft Elevate Hackathon.
