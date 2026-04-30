@@ -13,11 +13,36 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import {
   AlertCircle,
   ChevronRight,
+  Download,
   FileText,
   Loader2,
   Trash2,
   Upload,
 } from "lucide-react";
+
+const SAMPLE_FILES = [
+  {
+    href: "/samples/1_APBD_Normal_2024.xlsx",
+    name: "APBD Normal 2024",
+    description: "Contoh APBD wajar — gunakan untuk uji deteksi kepatuhan",
+    docType: "APBD",
+    badgeColor: "bg-blue-50 text-blue-700",
+  },
+  {
+    href: "/samples/2_Pengadaan_Bermasalah_2024.xlsx",
+    name: "Pengadaan Bermasalah 2024",
+    description: "Sengaja ada anomali — AI akan menemukan beberapa temuan",
+    docType: "Pengadaan",
+    badgeColor: "bg-violet-50 text-violet-700",
+  },
+  {
+    href: "/samples/3_SPJ_Sederhana_2024.xlsx",
+    name: "SPJ Sederhana 2024",
+    description: "Surat Pertanggungjawaban dengan transaksi standar",
+    docType: "SPJ",
+    badgeColor: "bg-amber-50 text-amber-700",
+  },
+];
 
 const DOC_TYPE_LABELS: Record<string, string> = {
   apbd: "APBD",
@@ -237,6 +262,38 @@ export default function DocumentsPage() {
           </p>
         </CardContent>
       </Card>
+
+      {/* Sample files */}
+      <div className="space-y-3">
+        <div>
+          <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+            Belum punya dokumen?
+          </h2>
+          <p className="text-xs text-muted-foreground/70 mt-0.5">
+            Download contoh dokumen di bawah untuk mencoba fitur upload.
+          </p>
+        </div>
+        <div className="grid gap-2 sm:grid-cols-3">
+          {SAMPLE_FILES.map((s) => (
+            <a
+              key={s.href}
+              href={s.href}
+              download
+              className="group flex flex-col gap-2 rounded-xl border border-border/60 bg-card p-4 shadow-sm hover:border-indigo-200 hover:shadow-md hover:-translate-y-0.5 transition-all duration-150"
+            >
+              <span className={`self-start rounded-md px-1.5 py-0.5 text-[10px] font-semibold tracking-wide ${s.badgeColor}`}>
+                {s.docType}
+              </span>
+              <p className="text-sm font-medium leading-snug">{s.name}</p>
+              <p className="text-xs text-muted-foreground leading-snug">{s.description}</p>
+              <span className="mt-auto flex items-center gap-1 text-xs font-medium text-primary group-hover:underline">
+                <Download className="h-3.5 w-3.5" />
+                Download .xlsx
+              </span>
+            </a>
+          ))}
+        </div>
+      </div>
 
       {/* Document list */}
       <div className="space-y-3">
