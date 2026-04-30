@@ -16,7 +16,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <meta name="dicoding:email" content="salmakurniadewi@gmail.com" />
       </head>
-      <body className="min-h-full" suppressHydrationWarning>{children}</body>
+      <body className="min-h-full leading-relaxed" suppressHydrationWarning>{children}</body>
     </html>
   );
 }
